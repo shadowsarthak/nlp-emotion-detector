@@ -23,6 +23,17 @@ def emotion_detector(text_to_analyze: str) -> str:
         json = { "raw_document": { "text": text_to_analyze}, },
         timeout = 20
     )
+    result = response.json()  
+
+emotion_scores = result['emotionPredictions'][0]['emotion']
+dominant_emotion = max(emotion_scores, key=emotion_scores.get)
+
+formatted_output = "For the given statement, the system response is"
+for emotion, score in emotion_scores.items():
+    formatted_output += f" '{emotion}': {score},"
+formatted_output = formatted_output.rstrip(',') + f". The dominant emotion is {dominant_emotion}."
+
+return formatted_output  
 
 
     # Example Output HTTP-Request:
